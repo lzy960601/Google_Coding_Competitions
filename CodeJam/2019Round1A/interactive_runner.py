@@ -1,4 +1,4 @@
-# This is a small program that runs two processes two processes, connecting the
+# This is a small program that runs two processes, connecting the
 # stdin of each one to the stdout of the other.
 # It doesn't perform a lot of checking, so many errors may
 # be caught internally by Python (e.g., if your command line has incorrect
@@ -8,10 +8,10 @@
 # python interactive_runner.py <cmd_line_judge> -- <cmd_line_solution>
 #
 # For example:
-# python interactive_runner.py python judge.py 0 -- ./my_binary
+# python interactive_runner.py python testing_tool.py 0 -- ./my_binaRy
 #
-# This will run the first test set of a python judge called "judge.py" that
-# receives the test set number (starting from 0) via command line parameter
+# this will run the first test set of a python judge called "testing_tool.py"
+# that receives the test set number (starting from 0) via command line parameter
 # with a solution compiled into a binary called "my_binary".
 #
 # This is only intended as a convenient tool to help contestants test solutions
