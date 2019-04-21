@@ -1,4 +1,9 @@
-# 2019 Round A
+# 2019 Qualification
+
+-   Score : 66
+-   Rank : 2361
+
+---
 
 感冒了，最后一题想不动了= =
 

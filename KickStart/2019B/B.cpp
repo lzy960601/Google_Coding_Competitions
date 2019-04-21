@@ -29,26 +29,29 @@ typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef vector<int> vi;
 
-const int maxn=100005;
-int a[maxn], sum[maxn];
-int n, T, k;
+const int maxn = 105;
+struct stone
+{
+    int s, e, l;
+    void read(){scanf("%d%d%d", &s, &e, &l);}
+    bool operator < (const struct stone &p) const {return p.l * s < l * p.s;}
+}s[maxn];
+int n, T, m, dp[10005];
 
 int main()
 {
     scanf("%d", &T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        int ans = 1e9 + 7;
-        scanf("%d%d", &n, &k); 
-        for(int i = 1; i <= n; ++ i) scanf("%d", &a[i]);
-        sort(a + 1, a + n + 1);
-        sum[0] = 0;
-        for(int i = 1; i <= n; ++ i) sum[i] = a[i] + sum[i - 1];
-        for(int i = k; i <= n; ++ i)
-        {
-            int val = a[i] * k - sum[i] + sum[i - k];
-            ans = min(ans, val);
-        }
+        scanf("%d", &n); m = 0;
+        for(int i = 1; i <= n; ++ i) s[i].read(), m += s[i].s;
+        sort(s + 1, s + n + 1);
+        for(int i = 0; i <= m; ++ i) dp[i] = 0;
+        for(int i = 1; i <= n; ++ i)
+            for(int k = m; k >= s[i].s; -- k)
+                dp[k] = max(dp[k], dp[k - s[i].s] + max(0, s[i].e - s[i].l * (k - s[i].s)));
+        int ans = 0;
+        for(int i = 0; i <= m; ++ i) ans = max(ans, dp[i]);
         prr(cas); printf("%d\n", ans);
     }
     return 0;

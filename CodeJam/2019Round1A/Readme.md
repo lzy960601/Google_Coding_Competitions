@@ -1,4 +1,9 @@
-# 2019 Round A
+# 2019 Round 1 Sub-Round A
+
+-   Score : 100
+-   Rank : 190
+
+---
 
 ## A
 

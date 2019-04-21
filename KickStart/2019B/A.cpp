@@ -29,25 +29,29 @@ typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef vector<int> vi;
 
-const int maxn=100005;
-int a[maxn], sum[maxn];
-int n, T, k;
+const int maxn = 200005;
+
+char s[maxn];
+int n, T, m, cnt[maxn][26];
 
 int main()
 {
     scanf("%d", &T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        int ans = 1e9 + 7;
-        scanf("%d%d", &n, &k); 
-        for(int i = 1; i <= n; ++ i) scanf("%d", &a[i]);
-        sort(a + 1, a + n + 1);
-        sum[0] = 0;
-        for(int i = 1; i <= n; ++ i) sum[i] = a[i] + sum[i - 1];
-        for(int i = k; i <= n; ++ i)
+        scanf("%d%d", &n, &m);
+        scanf("%s", s + 1);
+        for(int i = 1; i <= n; ++ i)
         {
-            int val = a[i] * k - sum[i] + sum[i - k];
-            ans = min(ans, val);
+            for(int k = 0; k < 26; ++ k) cnt[i][k] = cnt[i - 1][k];
+            cnt[i][s[i] - 65] ++;
+        }
+        int ans = 0;
+        while(m --)
+        {
+            int l, r, sum = 0; scanf("%d%d", &l, &r);
+            for(int i = 0; i < 26; ++ i) if((cnt[r][i] - cnt[l - 1][i]) & 1) sum ++;
+            ans += (sum <= 1);
         }
         prr(cas); printf("%d\n", ans);
     }
