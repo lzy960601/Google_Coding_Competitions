@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2019-10-01
+Date: 2020-03-09
 File: A.cpp
 *****************************************/
   
@@ -30,7 +30,7 @@ const double eln = 2.718281828459045235360287471352;
 #define sqr(x) (x) * (x)
 #define prcas printf("Case #%d: ", cas)
 #define pncas printf("Case #%d:\n", cas)
-#define lowbit(x) ((x) & (-x))
+#define lowbit(x) ((x) & (-(x)))
 #define fi first
 #define se second
 typedef long long LL;
@@ -39,38 +39,47 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 105;
-int cnt[1005], a[maxn], b[maxn][maxn], dp[maxn][maxn];
-int T, n, m;
+int T, n, m, o;
+struct Trie
+{
+    int dep, leaf, son[2];
+    void clear(){dep = son[0] = son[1] = leaf = 0;}
+}tr[5005];
+char s[55];
+
+LL cal(int rt)
+{
+    if(tr[rt].leaf == 1) return 1ll << (n - tr[rt].dep);
+    LL sum = 0;
+    for(int i = 0; i < 2; ++ i)
+        if(tr[rt].son[i] > 0) sum += cal(tr[rt].son[i]);
+    return sum;
+}
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scanf("%d%d", &n, &m); m ++;
-        for(int i = 1; i <= n; ++ i) scd(a[i]);
-        for(int i = 1; i <= n; ++ i)
+        scanf("%d%d", &n, &m); tr[o = 0].clear();
+        LL ans = 1ll << n;
+        while(m --)
         {
-            int ma = 0;
-            for(int j = i; j <= n; ++ j) cnt[a[j]] = 0;
-            for(int j = i; j <= n; ++ j)
+            scs(s + 1); int len = strlen(s + 1), now = 0;
+            for(int i = 1; i <= len; ++ i)
             {
-                ma = max(ma, ++ cnt[a[j]]);
-                b[i][j] = j - i + 1 - ma;
+                int v = (s[i] == 'B' ? 1 : 0);
+                if(tr[now].son[v] == 0)
+                {
+                    tr[now].son[v] = ++ o;
+                    tr[o].clear();
+                    tr[o].dep = tr[now].dep + 1;
+                }
+                now = tr[now].son[v];
             }
+            tr[now].leaf = 1;
         }
-        for(int i = 0; i <= n; ++ i)
-            for(int j = 0; j <= m; ++ j)
-                dp[i][j] = 1e9 + 7;
-        dp[1][1] = dp[0][0] = 0;
-        for(int i = 2; i <= n; ++ i)
-            for(int j = 1; j <= m; ++ j)
-                for(int k = 1; k <= i; ++ k)
-                    dp[i][j] = min(dp[i][j], dp[k - 1][j - 1] + b[k][i]);
-        int ans = 1e9 + 7;
-        for(int i = 1; i <= m; ++ i) ans = min(ans, dp[n][i]);
-        prcas; printf("%d\n", ans);
+        prcas; printf("%lld\n", ans - cal(0));
     }
     return 0;
 }

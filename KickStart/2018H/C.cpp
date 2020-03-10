@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2019-10-19
+Date: 2020-03-09
 File: C.cpp
 *****************************************/
   
@@ -39,39 +39,50 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 25;
-int dp[1048550];
-LL a[maxn], b[maxn], h;
-int n, T;
+const int mod = 1e9 + 7;
+const int maxn = 200005;
+
+int mi(int x, int y)
+{
+    int ret = 1;
+    while(y > 0)
+    {
+        if(y & 1) ret = 1ll * ret * x % mod;
+        x = 1ll * x * x % mod;
+        y >>= 1;
+    }
+    return ret;
+}
+
+int fac[maxn], ivf[maxn], two[maxn];
+int T, n, m;
+
+inline int C(int x, int y) {return 1ll * fac[x] * (1ll * ivf[y] * ivf[x - y] % mod) % mod;}
+
+int cal(int v)
+{
+    int tmp = 1ll * C(m, v) * two[v] % mod;
+    return 1ll * tmp * fac[2 * n - v] % mod;
+}
 
 int main()
 {	
+    two[0] = 1; for(int i = 1; i <= 100000; ++ i) two[i] = 2ll * two[i - 1] % mod;
+    fac[0] = 1; for(int i = 1; i <= 200000; ++ i) fac[i] = 1ll * i * fac[i - 1] % mod;
+    ivf[200000] = mi(fac[200000], mod - 2);
+    for(int i = 199999; i >= 0; -- i) ivf[i] = 1ll * (i + 1) * ivf[i + 1] % mod;
+
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scanf("%d%lld", &n, &h);
-        for(int i = 0; i < n; ++ i) scld(a[i]);
-        for(int i = 0; i < n; ++ i) scld(b[i]);
-        for(int mask = 0; mask < (1 << n); ++ mask)
+        scanf("%d%d", &n, &m);
+        int ans = 0;
+        for(int i = 0; i <= m; ++ i)
         {
-            LL sum = 0;
-            for(int i = 0; i < n; ++ i) 
-                if((mask >> i) & 1) sum += a[i];
-            if(sum >= h) dp[mask] = 1; else dp[mask] = 0;
+            int num = (i & 1) ? mod - cal(i) : cal(i);
+            (ans += num) %= mod;
         }
-        for(int i = 0; i < n; ++ i)
-            for(int mask = 0; mask < (1 << n); ++ mask)
-                if((mask >> i) & 1) dp[mask ^ (1 << i)] += dp[mask];
-        LL ans = 0;
-        for(int mask = 0; mask < (1 << n); ++ mask)
-        {
-            LL sum = 0, task = 0;
-            for(int i = 0; i < n; ++ i)
-                if((mask >> i) & 1) sum += b[i]; else task |= (1 << i);
-            if(sum < h) continue;
-            ans += dp[task];
-        }
-        prcas; printf("%lld\n", ans);
-    } 
+        prcas; printf("%d\n", ans);
+    }
     return 0;
 }
