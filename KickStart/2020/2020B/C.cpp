@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2019-10-19
+Date: 2020-04-19
 File: C.cpp
 *****************************************/
   
@@ -39,39 +39,53 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 25;
-int dp[1048550];
-LL a[maxn], b[maxn], h;
-int n, T;
+const int mod = 1e9;
+pii dir[4] = { mp(1, 0), mp(0, 1), mp(mod - 1, 0), mp(0, mod - 1) };
+int getdir(char c)
+{
+    if(c == 'E') return 0;
+    if(c == 'S') return 1;
+    if(c == 'W') return 2;
+    if(c == 'N') return 3;
+    assert(0);
+    return -1;
+}
+
+char s[20005];
+int T, n, cnt;
+
+struct node
+{
+    int xs, sx, sy;
+}a[20005];
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scanf("%d%lld", &n, &h);
-        for(int i = 0; i < n; ++ i) scld(a[i]);
-        for(int i = 0; i < n; ++ i) scld(b[i]);
-        for(int mask = 0; mask < (1 << n); ++ mask)
+        scs(s + 1); n = strlen(s + 1);
+        a[0] = {0, 0, 0};
+        s[++ n] = ')'; a[cnt = 1] = {1, 0, 0};
+        for(int i = 1; i <= n; ++ i)
         {
-            LL sum = 0;
-            for(int i = 0; i < n; ++ i) 
-                if((mask >> i) & 1) sum += a[i];
-            if(sum >= h) dp[mask] = 1; else dp[mask] = 0;
+            char c = s[i];
+            if(c == ')')
+            {
+                (a[cnt - 1].sx += 1ll * a[cnt].xs * a[cnt].sx % mod) %= mod;
+                (a[cnt - 1].sy += 1ll * a[cnt].xs * a[cnt].sy % mod) %= mod;
+                -- cnt; continue;
+            }
+            if(c >= '1' && c <= '9')
+            {
+                a[++ cnt] = {c - 48, 0, 0};
+                ++ i; continue;
+            }
+            int d = getdir(c);
+            (a[cnt].sx += dir[d].fi) %= mod;
+            (a[cnt].sy += dir[d].se) %= mod;
         }
-        for(int i = 0; i < n; ++ i)
-            for(int mask = 0; mask < (1 << n); ++ mask)
-                if((mask >> i) & 1) dp[mask ^ (1 << i)] += dp[mask];
-        LL ans = 0;
-        for(int mask = 0; mask < (1 << n); ++ mask)
-        {
-            LL sum = 0, task = 0;
-            for(int i = 0; i < n; ++ i)
-                if((mask >> i) & 1) sum += b[i]; else task |= (1 << i);
-            if(sum < h) continue;
-            ans += dp[task];
-        }
-        prcas; printf("%lld\n", ans);
-    } 
+        prcas; printf("%d %d\n", a[0].sx + 1, a[0].sy + 1);
+    }
     return 0;
 }

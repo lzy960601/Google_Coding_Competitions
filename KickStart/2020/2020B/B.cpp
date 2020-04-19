@@ -1,8 +1,8 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2019-10-19
-File: C.cpp
+Date: 2020-04-19
+File: B.cpp
 *****************************************/
   
 #include<bits/stdc++.h>
@@ -20,8 +20,8 @@ const double eln = 2.718281828459045235360287471352;
 # define _debug(...) ((void) 0)
 #endif
 
-#define IN freopen("C.in", "r", stdin)
-#define OUT freopen("C.out", "w", stdout)
+#define IN freopen("B.in", "r", stdin)
+#define OUT freopen("B.out", "w", stdout)
 #define scd(x) scanf("%d", &x)
 #define scld(x) scanf("%lld", &x)
 #define scs(x) scanf("%s", x)
@@ -39,39 +39,30 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 25;
-int dp[1048550];
-LL a[maxn], b[maxn], h;
-int n, T;
+const int maxn = 1005;
+int T, n;
+LL a[maxn], D;
+
+bool check(LL x)
+{
+    for(int i = 1; i <= n; ++ i) x += a[i] - 1, x -= x % a[i];
+    return x <= D;
+}
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scanf("%d%lld", &n, &h);
-        for(int i = 0; i < n; ++ i) scld(a[i]);
-        for(int i = 0; i < n; ++ i) scld(b[i]);
-        for(int mask = 0; mask < (1 << n); ++ mask)
+        scd(n); scld(D); for(int i = 1; i <= n; ++ i) scld(a[i]);
+        LL l = 1, r = D;
+        while(r - l > 1)
         {
-            LL sum = 0;
-            for(int i = 0; i < n; ++ i) 
-                if((mask >> i) & 1) sum += a[i];
-            if(sum >= h) dp[mask] = 1; else dp[mask] = 0;
+            LL mid = (l + r) >> 1;
+            if(check(mid)) l = mid; else r = mid;
         }
-        for(int i = 0; i < n; ++ i)
-            for(int mask = 0; mask < (1 << n); ++ mask)
-                if((mask >> i) & 1) dp[mask ^ (1 << i)] += dp[mask];
-        LL ans = 0;
-        for(int mask = 0; mask < (1 << n); ++ mask)
-        {
-            LL sum = 0, task = 0;
-            for(int i = 0; i < n; ++ i)
-                if((mask >> i) & 1) sum += b[i]; else task |= (1 << i);
-            if(sum < h) continue;
-            ans += dp[task];
-        }
-        prcas; printf("%lld\n", ans);
-    } 
+        while(!check(r)) -- r;
+        prcas; printf("%lld\n", r);
+    }
     return 0;
 }
