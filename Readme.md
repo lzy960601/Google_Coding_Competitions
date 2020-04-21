@@ -4,7 +4,7 @@
 
 #### *KickStart*
 
-- 2020 : A
+- 2020 : AB
 
 - 2019 : ABCDEFGH
 
@@ -12,7 +12,7 @@
 
 #### *CodeJam*
 
-- 2020 : Qualification + Round1(A)
+- 2020 : Qualification + Round1(AB)
 
 - 2019 : Qualification + Round1(ABC) + Round2
 
