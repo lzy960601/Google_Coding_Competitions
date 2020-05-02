@@ -12,7 +12,7 @@
 
 #### *CodeJam*
 
-- 2020 : Qualification + Round1(AB)
+- 2020 : Qualification + Round1(ABC)
 
 - 2019 : Qualification + Round1(ABC) + Round2
 
