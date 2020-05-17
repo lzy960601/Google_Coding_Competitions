@@ -4,7 +4,7 @@
 
 #### *KickStart*
 
-- 2020 : AB
+- 2020 : ABC
 
 - 2019 : ABCDEFGH
 
