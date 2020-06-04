@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2020-04-19
+Date: 2020-05-17
 File: B.cpp
 *****************************************/
   
@@ -39,30 +39,57 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 1005;
-int T, n;
-LL a[maxn], D;
-
-bool check(LL x)
-{
-    for(int i = 1; i <= n; ++ i) x += a[i] - 1, x -= x % a[i];
-    return x <= D;
-}
+int a[35][35], vis[35];
+int n, m, T, deg[26];
+char s[35];
+vi ans, g[26];
+queue<int> q;
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scd(n); scld(D); for(int i = 1; i <= n; ++ i) scld(a[i]);
-        LL l = 1, r = D;
-        while(r - l > 1)
+        for(int i = 0; i < 26; ++ i) g[i].clear(), vis[i] = deg[i] = 0;;
+        scanf("%d%d", &n, &m); ans.clear();
+        for(int i = 1; i <= n; ++ i)
         {
-            LL mid = (l + r) >> 1;
-            if(check(mid)) l = mid; else r = mid;
+            scs(s + 1);
+            for(int k = 1; k <= m; ++ k)
+            {
+                int v = s[k] - 'A';
+                a[i][k] = v;
+                vis[v] = 1;
+            }
         }
-        while(!check(r)) -- r;
-        prcas; printf("%lld\n", r);
+        for(int i = n - 1; i >= 1; -- i)
+            for(int k = 1; k <= m; ++ k)
+            {
+                int x = a[i][k], y = a[i + 1][k];
+                if(x != y) { ++ deg[x]; g[y].pb(x); }
+            }
+        while(!q.empty()) q.pop();
+        for(int k = 0; k < 26; ++ k)
+            if(vis[k] && deg[k] <= 0) q.push(k);
+        while(!q.empty())
+        {
+            int t = q.front(); q.pop();
+            vis[t] = 2; ans.pb(t);
+            for(int p : g[t])
+            {
+                deg[p] --;
+                if(deg[p] == 0) q.push(p);
+            }
+        }
+        bool flag = true;
+        for(int i = 0; i < 26; ++ i) if(vis[i] == 1) flag = false;
+        prcas;
+        if(flag)
+        {
+            putchar(ans[0] + 'A');
+            for(int i = 1; i < ans.size(); ++ i) putchar(ans[i] + 'A');
+            puts("");
+        }else puts("-1");
     }
     return 0;
 }

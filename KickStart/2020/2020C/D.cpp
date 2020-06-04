@@ -1,150 +1,114 @@
-#include <bits/stdc++.h>
+/*****************************************
+Author: lizi
+Email: lzy960601@gmail.com
+Date: 2020-05-17
+File: D.cpp
+*****************************************/
+  
+#include<bits/stdc++.h>
+  
 using namespace std;
+  
+const double eps = 1e-10;
+const double pi = 3.1415926535897932384626433832795;
+const double eln = 2.718281828459045235360287471352;
 
-int w, h, l, u, r, d;
-double facts[200010];
-int fact_digits[200010];
+#ifdef __LOCAL_DEBUG__
+# define _debug(fmt, ...) fprintf(stderr, "[%s] " fmt "\n", \
+    __func__, ##__VA_ARGS__)
+#else
+# define _debug(...) ((void) 0)
+#endif
 
-void init() {
-    facts[0] = facts[1] = 1;
-    for(int i = 2; i < 200010; i++) {
-        facts[i] = facts[i - 1] * i;
-        fact_digits[i] = fact_digits[i - 1];
-        while(facts[i] >= 2) {
-            facts[i] /= 2;
-            fact_digits[i]++;
+#define IN freopen("D.in", "r", stdin)
+#define OUT freopen("D.out", "w", stdout)
+#define scd(x) scanf("%d", &x)
+#define scld(x) scanf("%lld", &x)
+#define scs(x) scanf("%s", x)
+#define mp make_pair
+#define pb push_back
+#define sqr(x) (x) * (x)
+#define prcas printf("Case #%d: ", cas)
+#define pncas printf("Case #%d:\n", cas)
+#define lowbit(x) ((x) & (-(x)))
+#define fi first
+#define se second
+typedef long long LL;
+typedef unsigned long long ull;
+typedef pair<int, int> pii;
+typedef pair<LL, LL> pll;
+typedef vector<int> vi;
+
+const int maxn = 200005;
+struct BIT
+{
+    int lim;
+    LL sum[maxn];
+
+    void init(int n){ lim = n; for(int i = 1; i <= n; ++ i) sum[i] = 0; }
+
+    void add(int p, LL v)
+    {
+        while(p <= lim)
+        {
+            sum[p] += v;
+            p += lowbit(p);
         }
     }
-}
 
-const int DIGIT = 64;
-
-pair<double, int> comb(int x, int y) {
-    // x! / y! / (x - y)!;
-    double ret = facts[x], rd = fact_digits[x];
-    ret /= facts[y]; rd -= fact_digits[y];
-    ret /= facts[x - y]; rd -= fact_digits[x - y];
-    while(ret <= 0.5) {
-        rd--;
-        ret *= 2;
-    }
-    return make_pair(ret, rd);
-}
-
-pair<double, int> add_num(pair<double, int>& p1, pair<double, int>& p2) {
-    if(p1.first == 0) return p2;
-    if(p2.first == 0) return p1;
-    if(p2.second - p1.second > DIGIT) {
-        return p2;
-    } else if(p1.second - p2.second > DIGIT) {
-        return p1;
-    } else {
-        while(p1.second < p2.second) {
-            p1.second++;
-            p1.first /= 2;
+    LL cal(int p)
+    {
+        LL ret = 0;
+        while(p > 0)
+        {
+            ret += sum[p];
+            p -= lowbit(p);
         }
-        while(p2.second < p1.second) {
-            p2.second++;
-            p2.first /= 2;
-        }
-        return make_pair(p1.first + p2.first, p1.second);
+        return ret;
     }
-}
 
-pair<double, int> posp(int x, int y) {
-    pair<double, int> p{0, 0};
-    if(x == w) {
-        p.first = 1;
-        p.second = - (x - 1);
-        for(int j = 2; j <= y; j++) {
-            auto tp = posp(x - 1, j);
-            tp.second--;
-            p = add_num(p, tp);
-        }
-        return p;
-    }
-    if(y == h) {
-        p.first = 1;
-        p.second = - (y - 1);
-        for(int j = 2; j <= x; j++) {
-            auto tp = posp(j, y - 1);
-            tp.second--;
-            p = add_num(p, tp);
-        }
-        return p;
-    }
-    // number of equal p paths
-    auto tp = comb(x + y - 2, x - 1);
-    tp.second -= x + y - 2;
-    return tp;
-}
+    LL cal_rng(int l, int r) { return cal(r) - cal(l - 1); }
+}s1, s2;
 
-double solve() {
-    if(w == 1 || h == 1) return 0;
-    double tpv = 0;
-    int tpd = 0;
-    if(u > 1) {
-        for(int i = l; i <= r; i++) {
-            auto tp = posp(i, u - 1);
-            if(i != w) tp.second--;
-            if(tp.second - tpd > DIGIT) {
-                tpv = tp.first;
-                tpd = tp.second;
-            } else if(tpd - tp.second > DIGIT) {
-                continue;
-            } else {
-                while(tpd < tp.second) {
-                    tpd++;
-                    tpv /= 2;
-                }
-                while(tp.second < tpd) {
-                    tp.second++;
-                    tp.first /= 2;
-                }
-                tpv += tp.first;
+int T, n, q, a[maxn];
+char s[2];
+
+int main()
+{	
+    scd(T);
+    for(int cas = 1; cas <= T; ++ cas)
+    {
+        scanf("%d%d", &n, &q);
+        s1.init(n); s2.init(n);
+        for(int i = 1; i <= n; ++ i)
+        {
+            scd(a[i]);
+            int xs = ((i % 2 == 1) ? 1 : -1);
+            s1.add(i, xs * a[i]);
+            s2.add(i, 1ll * i * a[i] * xs);
+        }
+        LL ans = 0;
+        while(q --)
+        {
+            scs(s);
+            if(s[0] == 'U')
+            {
+                int x, y; scanf("%d%d", &x, &y);
+                int xs = ((x % 2 == 1) ? 1 : -1);
+                int c = y - a[x];
+                s1.add(x, xs * c);
+                s2.add(x, 1ll * x * c * xs);
+                a[x] = y;
+            }else
+            {
+                int l, r; scanf("%d%d", &l, &r);
+                LL r1 = s1.cal_rng(l, r);
+                LL r2 = s2.cal_rng(l, r);
+                LL v = r2 - r1 * (l - 1);
+                if(l & 1) ans += v; else ans -= v;
             }
         }
+        prcas; printf("%lld\n", ans);
     }
-    if(l > 1) {
-        for(int i = u; i <= d; i++) {
-            auto tp = posp(l - 1, i);
-            if(i != h) tp.second--;
-            if(tp.second - tpd > DIGIT) {
-                tpv = tp.first;
-                tpd = tp.second;
-            } else if(tpd - tp.second > DIGIT) {
-                continue;
-            } else {
-                while(tpd < tp.second) {
-                    tpd++;
-                    tpv /= 2;
-                }
-                while(tp.second < tpd) {
-                    tp.second++;
-                    tp.first /= 2;
-                }
-                tpv += tp.first;
-            }
-        }
-    }
-
-    while(tpd > 0) {
-        tpv *= 2;
-        tpd--;
-    }
-    while(tpd < 0) {
-        tpv /= 2;
-        tpd++;
-    }
-    return 1 - tpv;
-}
-
-int main() {
-    init();
-
-    int T; cin >> T;
-    for(int ka = 0; ka < T; ka++) {
-        cin >> w >> h >> l >> u >> r >> d;
-        printf("Case #%d: %.10lf\n", ka + 1, solve());
-    }
+    return 0;
 }

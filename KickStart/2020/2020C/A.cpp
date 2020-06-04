@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2020-04-19
+Date: 2020-05-17
 File: A.cpp
 *****************************************/
   
@@ -39,18 +39,22 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int maxn = 105;
-int T, a[maxn], n;
+const int maxn = 200005;
+int a[maxn], n, k, T;
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scd(n); for(int i = 1; i <= n; ++ i) scd(a[i]);
-        int ans = 0;
-        for(int i = 2; i < n; ++ i) 
-            if(a[i] > a[i - 1] && a[i] > a[i + 1]) ++ ans;
+        scanf("%d%d", &n, &k);
+        for(int i = 1; i <= n; ++ i) scd(a[i]);
+        int tmp = 0, ans = 0;
+        for(int i = 1; i <= n; ++ i)
+        {
+            if(a[i - 1] - 1 != a[i]) tmp = a[i];
+            if(a[i] == 1 && tmp >= k) ans ++;
+        }
         prcas; printf("%d\n", ans);
     }
     return 0;

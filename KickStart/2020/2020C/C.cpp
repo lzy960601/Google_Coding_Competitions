@@ -1,7 +1,7 @@
 /*****************************************
 Author: lizi
 Email: lzy960601@gmail.com
-Date: 2020-04-19
+Date: 2020-05-17
 File: C.cpp
 *****************************************/
   
@@ -39,53 +39,37 @@ typedef pair<int, int> pii;
 typedef pair<LL, LL> pll;
 typedef vector<int> vi;
 
-const int mod = 1e9;
-pii dir[4] = { mp(1, 0), mp(0, 1), mp(mod - 1, 0), mp(0, mod - 1) };
-int getdir(char c)
-{
-    if(c == 'E') return 0;
-    if(c == 'S') return 1;
-    if(c == 'W') return 2;
-    if(c == 'N') return 3;
-    assert(0);
-    return -1;
-}
-
-char s[20005];
-int T, n, cnt;
-
-struct node
-{
-    int xs, sx, sy;
-}a[20005];
+const int maxn = 100005;
+unordered_map<LL, int> rec;
+LL sum[maxn];
+int n, T;
 
 int main()
 {	
     scd(T);
     for(int cas = 1; cas <= T; ++ cas)
     {
-        scs(s + 1); n = strlen(s + 1);
-        a[0] = {0, 0, 0};
-        s[++ n] = ')'; a[cnt = 1] = {1, 0, 0};
+        scd(n); sum[0] = 0;
+        LL ma = 0;
         for(int i = 1; i <= n; ++ i)
         {
-            char c = s[i];
-            if(c == ')')
-            {
-                (a[cnt - 1].sx += 1ll * a[cnt].xs * a[cnt].sx % mod) %= mod;
-                (a[cnt - 1].sy += 1ll * a[cnt].xs * a[cnt].sy % mod) %= mod;
-                -- cnt; continue;
-            }
-            if(c >= '1' && c <= '9')
-            {
-                a[++ cnt] = {c - 48, 0, 0};
-                ++ i; continue;
-            }
-            int d = getdir(c);
-            (a[cnt].sx += dir[d].fi) %= mod;
-            (a[cnt].sy += dir[d].se) %= mod;
+            int x;
+            scd(x); sum[i] = sum[i - 1] + x;
+            if(x > 0) ma += x;
         }
-        prcas; printf("%d %d\n", a[0].sx + 1, a[0].sy + 1);
+        int up = (int)sqrt((double)ma + 0.5) + 1;
+        rec.clear(); rec[0ll] = 1;
+        LL ans = 0;
+        for(int i = 1; i <= n; ++ i)
+        {
+            for(int k = 0; k <= up; ++ k)
+            {
+                LL nd = sum[i] - 1ll * k * k;
+                if(rec.find(nd) != rec.end()) ans += rec[nd];
+            }
+            rec[sum[i]] ++;
+        }
+        prcas; printf("%lld\n", ans);
     }
     return 0;
 }
