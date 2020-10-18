@@ -2,7 +2,7 @@
 
 -   Score : -
 -   Rank : -
--   感谢·sylxjtu·提供的代码和题解
+-   感谢`sylxjtu`提供的代码和题解
 ---
 
 ## A
