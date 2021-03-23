@@ -10,7 +10,7 @@
 
 - 2019 : ABCDEFGH
 
-- 2018 : GH
+- 2018 : DGH
 
 #### *CodeJam*
 
