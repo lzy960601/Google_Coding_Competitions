@@ -10,7 +10,7 @@
 
 - 2019 : ABCDEFGH
 
-- 2018 : DGH
+- 2018 : DFGH
 
 #### *CodeJam*
 
@@ -21,4 +21,4 @@
 
 ## Progress
 
-Solving problems in KS2018 Round E and F, they are so hard!
+Solving problems in KS2018 Round E, it is so hard!
