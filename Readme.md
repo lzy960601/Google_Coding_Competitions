@@ -14,7 +14,7 @@
 
 #### *CodeJam*
 
-- 2021 : Qualification
+- 2021 : Qualification + Round1(A)
 - 2020 : Qualification + Round1(ABC)
 - 2019 : Qualification + Round1(ABC) + Round2
 
