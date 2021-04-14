@@ -10,7 +10,7 @@
 
 - 2019 : ABCDEFGH
 
-- 2018 : DFGH
+- 2018 : CDFGH
 
 #### *CodeJam*
 
