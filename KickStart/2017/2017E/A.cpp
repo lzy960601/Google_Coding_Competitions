@@ -1,0 +1,118 @@
+/*****************************************
+Author: lizi
+Email: lzy960601@gmail.com
+Date: 2021-05-14
+File: A.cpp
+*****************************************/
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx")
+#include<bits/stdc++.h>
+
+using namespace std;
+
+const double eps = 1e-10;
+const double pi = 3.1415926535897932384626433832795;
+const double eln = 2.718281828459045235360287471352;
+
+#ifdef __LOCAL_DEBUG__
+# define _debug(fmt, ...) fprintf(stderr, "[%s] " fmt "\n", \
+    __func__, ##__VA_ARGS__)
+#else
+# define _debug(...) ((void) 0)
+#endif
+
+#define IN freopen("A.in", "r", stdin)
+#define OUT freopen("A.out", "w", stdout)
+#define scd(x) scanf("%d", &x)
+#define scld(x) scanf("%lld", &x)
+#define scs(x) scanf("%s", x)
+#define mp make_pair
+#define pb push_back
+#define sqr(x) (x) * (x)
+#define prcas printf("Case #%d: ", cas)
+#define pncas printf("Case #%d:\n", cas)
+#define lowbit(x) ((x) & (-(x)))
+#define fi first
+#define se second
+typedef long long LL;
+typedef unsigned long long ull;
+typedef pair<int, int> pii;
+typedef pair<LL, LL> pll;
+typedef vector<int> vi;
+
+const int maxn = 5005;
+vi rd;
+vector<pll> a;
+int n;
+
+LL C3(int v)
+{
+    LL ret = 1ll * v * (v - 1) * (v - 2);
+    return ret / 6;
+}
+
+LL C2(int v) { return 1ll * v * (v - 1) / 2; }
+
+LL solve()
+{
+    scd(n); rd.clear(); a.clear();
+    for(int i = 1; i <= n; ++ i)
+    {
+        int x; scd(x);
+        rd.pb(x);
+    }
+    sort(rd.begin(), rd.end());
+    int cnt = 1, val = rd[0];
+    for(int i = 1; i < n; ++ i)
+        if(rd[i] != rd[i - 1])
+        {
+            a.pb(mp(val, cnt));
+            val = rd[i]; cnt = 1;
+        }else ++ cnt;
+    if(cnt > 0) a.pb(mp(val, cnt));
+    LL ans = 0;
+    int sz = a.size();
+
+    // same 3
+    for(int i = 0; i < sz; ++ i)
+    {
+        if(a[i].se < 3) continue;
+        LL s1 = C3(a[i].se), s2 = 0;
+        for(int j = 0; j < sz; ++ j)
+            if(j == i || a[j].fi >= a[i].fi * 3) continue;
+            else s2 += a[j].se;
+        ans += s1 * s2;
+    }
+
+    // same 2
+    for(int i = 0; i < sz; ++ i)
+    {
+        if(a[i].se < 2) continue;
+        LL s1 = C2(a[i].se), s2 = 0, sum = 0;
+        int y = 0;
+        for(int j = 0; j < sz; ++ j)
+        {
+            if(j == i) continue;
+            while(y < sz && a[y].fi < a[i].fi * 2 + a[j].fi)
+            {
+                if(y != i) sum += a[y].se; 
+                ++ y;
+            }
+            sum -= a[j].se;
+            s2 += a[j].se * sum;
+        }
+        ans += s1 * s2;
+    }
+    return ans;
+}
+
+int main()
+{
+    int T; scd(T);
+    for(int cas = 1; cas <= T; ++ cas)
+    {
+        LL ans = solve();
+        prcas; printf("%lld\n", ans);
+    }
+    return 0;
+}
