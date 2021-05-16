@@ -12,11 +12,11 @@
 
 #### *CodeJam*
 
-- 2021 : Qualification + Round1(A)
+- 2021 : Qualification + Round1(A) + Round2
 - 2020 : Qualification + Round1(ABC)
 - 2019 : Qualification + Round1(ABC) + Round2
 
 
 ## Progress
 
-Solving problems in KS2018 Round E, it is so hard!
+None
