@@ -8,7 +8,7 @@
 - 2020 : ABCDEFGH
 - 2019 : ABCDEFGH
 - 2018 : ABCDEFGH
-- 2017 : ABCDE
+- 2017 : ABCDEF
 
 #### *CodeJam*
 
