@@ -4,12 +4,12 @@
 
 #### *KickStart*
 
-- 2021 : AB
+- 2021 : ABC
 - 2020 : ABCDEFGH
 - 2019 : ABCDEFGH
 - 2018 : ABCDEFGH
 - 2017 : ABCDEFG
-- 2016 : AB
+- 2016 : ABC
 
 #### *CodeJam*
 
