@@ -9,7 +9,7 @@
 - 2019 : ABCDEFGH
 - 2018 : ABCDEFGH
 - 2017 : ABCDEFG
-- 2016 : ABC
+- 2016 : ABCD
 
 #### *CodeJam*
 
