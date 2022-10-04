@@ -4,7 +4,7 @@
 
 #### *KickStart*
 
-- 2022 : ADE
+- 2022 : ADEF
 - 2021 : ABC
 - 2020 : ABCDEFGH
 - 2019 : ABCDEFGH
